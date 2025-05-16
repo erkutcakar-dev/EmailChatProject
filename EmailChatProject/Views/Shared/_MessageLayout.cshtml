@@ -20,16 +20,15 @@
     <div id="main-wrapper">
 
         @await Component.InvokeAsync("_MessageHeaderComponentPartial")
-
-        @await Component.InvokeAsync("_MessageContentBodyComponentPartial")
         @RenderBody()
 
-        @await Component.InvokeAsync("_MessageFooterComponentPartial")
+        @await Component.InvokeAsync("_MessageContentBodyComponentPartial")
+        
 
     </div>
+    @await Component.InvokeAsync("_MessageFooterComponentPartial")
     
     @await Component.InvokeAsync("_MessageScriptComponentPartial")
-
 
 </body>
 
