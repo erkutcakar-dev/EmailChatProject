@@ -1,0 +1,35 @@
+﻿@model List<Message>
+@{
+    ViewData["Title"] = "TrashBox";
+    Layout = "~/Views/Shared/_MessageLayout.cshtml";
+}
+
+<div class="email-right-box">
+
+    <h3>Çöp Kutusu</h3>
+
+    @if (!Model.Any())
+    {
+        <p>Çöp kutusunda mesaj yok.</p>
+    }
+    else
+    {
+        <div class="email-list">
+            @foreach (var item in Model)
+            {
+                <div class="message">
+                    <a href="@Url.Action("MessageDetail", "Message", new { id = item.MessageId })">
+                        <div class="col-mail col-mail-1">
+                            <span class="text-muted">@(item.SenderMail == User.Identity.Name ? "Gönderdiğin" : "Aldığın")</span>
+                        </div>
+                        <div class="col-mail col-mail-2">
+                            <div class="subject">@item.Subject</div>
+                            <div class="date">@item.SendDate.ToString("dd-MMM-yyyy")</div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+</div>
+

@@ -1,0 +1,39 @@
+﻿@model EmailChatProject.Entities.Message
+@{
+    ViewData["Title"] = "CreateMessage";
+    Layout = "~/Views/Shared/_MessageLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-9" style="padding: 20px;">
+            @if (ViewBag.Success != null)
+            {
+                <div class="alert alert-success">@ViewBag.Success</div>
+            }
+
+            <form asp-action="CreateMessage" asp-controller="Message" method="post">
+                <div class="form-group">
+                    <label asp-for="ReceiverMail" class="control-label"></label>
+                    <input asp-for="ReceiverMail" class="form-control" type="email" placeholder="Alıcı" />
+                    <span asp-validation-for="ReceiverMail" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Subject" class="control-label"></label>
+                    <input asp-for="Subject" class="form-control" placeholder="Konu" />
+                    <span asp-validation-for="Subject" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="MessageDetail" class="control-label"></label>
+                    <textarea asp-for="MessageDetail" class="form-control" rows="10" placeholder="Mesajını yazın."></textarea>
+                    <span asp-validation-for="MessageDetail" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Gönder</button>
+                <button type="reset" class="btn btn-secondary">İptal Et</button>
+            </form>
+        </div>
+    </div>
+</div>

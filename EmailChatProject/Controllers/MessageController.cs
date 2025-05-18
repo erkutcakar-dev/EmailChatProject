@@ -1,7 +1,6 @@
-﻿
-using EmailChatProject.Context;
+﻿using EmailChatProject.Context;
 using EmailChatProject.Entities;
-using Microsoft.AspNetCore.Authorization;
+using EmailChatProject.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,9 +20,6 @@ namespace EmailChatProject.Controllers
             _userManager = userManager;
         }
 
-
-
-        [Authorize]
         public async Task<IActionResult> Inbox(string search)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
@@ -50,19 +46,29 @@ namespace EmailChatProject.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMessage(Message message)
         {
-
-            var values = await _userManager.FindByNameAsync(User.Identity.Name);
-            string senderEmail = values.Email;
-            string senderName = values.Name;
-
-            message.SenderMail = senderEmail;
-            message.SenderName = senderName;
+            var sender = await _userManager.FindByNameAsync(User.Identity.Name);
+            message.SenderMail = sender.Email;
+            message.SenderName = sender.Name;
             message.Isread = true;
             message.SendDate = DateTime.Now;
+
+            // Alıcıyı buluyoruz
+            var receiverUser = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.Email == message.ReceiverMail);
+
+            if (receiverUser == null)
+            {
+                ModelState.AddModelError("ReceiverMail", "Alıcı e-posta adresi sistemde kayıtlı değil.");
+                return View(message);
+            }
+
+            message.ReceiverName = receiverUser.Name + " " + receiverUser.Surname;
+
             _contextEmail.messages.Add(message);
-            _contextEmail.SaveChanges();
+            await _contextEmail.SaveChangesAsync();
+
             ViewBag.Success = "Gönderim işlemi başarılı!";
-            return View("~/Views/Message/NewMessage.cshtml");
+            return View();
         }
         public async Task<IActionResult> SendBox(string search)
         {
@@ -86,7 +92,8 @@ namespace EmailChatProject.Controllers
         }
         public async Task<IActionResult> MessageDetail(int id)
         {
-            var values = await _userManager.FindByNameAsync(User.Identity.Name);            
+            var values = await _userManager.FindByNameAsync(User.Identity.Name);
+            ViewBag.senderimage = values.ProfileImageURL;
             var value = _contextEmail.messages.FirstOrDefault(x => x.MessageId == id);
             return View(value);
         }
@@ -106,23 +113,18 @@ namespace EmailChatProject.Controllers
             return RedirectToAction("TrashBox");
         }
 
-        public IActionResult TrashBox()
+        public async Task<IActionResult> TrashBox()
         {
-            var deletedValues = _contextEmail.messages.Where(x => x.Isread == false).ToList();
-            return View(deletedValues);
-        }
-        public async Task<IActionResult> MessageCount()
-        {
-            var values = await _userManager.FindByNameAsync(User.Identity.Name);
-            ViewBag.RecipientEmailAddressCount = _contextEmail.messages
-                         .Where(x => x.ReceiverMail == values.Email)
-                         .Count();
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            string userEmail = user.Email;
 
-            ViewBag.SenderEmailAddressCount = _contextEmail.messages
-                                     .Where(x => x.SenderMail == values.Email)
-                                     .Count();
-            return View();
+            var deletedMessages = _contextEmail.messages
+                .Where(m => (m.SenderMail == userEmail || m.ReceiverMail == userEmail) && m.Isread == false)
+                .ToList();
+
+            return View(deletedMessages);
         }
+
 
 
 

@@ -1,6 +1,6 @@
 ﻿namespace EmailChatProject.Entities
 {
-    public class Message
+    public class Message 
     {
 
         public int MessageId { get; set; }

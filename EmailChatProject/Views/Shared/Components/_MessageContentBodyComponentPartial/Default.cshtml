@@ -1,39 +1,36 @@
-﻿<div class="container-fluid">
-    <div class="row">
-        <!-- Sol Menü -->
-        <div class="col-md-3 bg-light" style="min-height: 100vh; padding: 20px;">
-            <a href="#" class="btn btn-primary btn-block mb-3">Compose</a>
-            <ul class="list-unstyled">
-                <li><a href="#" class="d-block mb-2"><i class="fa fa-inbox"></i> Inbox <span class="badge badge-primary">198</span></a></li>
-                <li><a href="#" class="d-block mb-2"><i class="fa fa-paper-plane"></i> Sent</a></li>
-                <li><a href="#" class="d-block mb-2"><i class="fa fa-star-o"></i> Important <span class="badge badge-danger">47</span></a></li>
-                <li><a href="#" class="d-block mb-2"><i class="fa fa-file"></i> Draft</a></li>
-                <li><a href="#" class="d-block"><i class="fa fa-trash"></i> Trash</a></li>
-            </ul>
-            <h5 class="mt-4">Categories</h5>
-            <ul class="list-unstyled">
-                <li><a href="#" class="d-block mb-1"><i class="fa fa-briefcase"></i> Work</a></li>
-                <li><a href="#" class="d-block mb-1"><i class="fa fa-cloud"></i> Private</a></li>
-                <li><a href="#" class="d-block mb-1"><i class="fa fa-support"></i> Support</a></li>
-                <li><a href="#" class="d-block"><i class="fa fa-tags"></i> Social</a></li>
-            </ul>
-        </div>
+﻿@model MessageViewModel
 
-        <!-- Sağ Mail Yazma Alanı -->
-        <div class="col-md-9" style="padding: 20px;">
-            <form>
-                <div class="form-group">
-                    <input type="email" class="form-control" placeholder="To">
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Subject">
-                </div>
-                <div class="form-group">
-                    <textarea class="form-control" rows="10" placeholder="Enter text ..."></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Send</button>
-                <button type="reset" class="btn btn-secondary">Discard</button>
-            </form>
-        </div>
+<div class="email-left-box">
+    <a href="/Message/CreateMessage/" class="btn btn-primary btn-block">Yeni Mesaj Oluştur</a>
+
+    <div class="mail-list mt-4">
+
+        <a href="/User/Profile/" class="list-group-item border-0 p-r-0">
+            <i class="fa fa-star-o font-18 align-middle mr-2"></i>
+            Profilim
+        </a>
+
+        <a href="/Message/Inbox/" class="list-group-item border-0 text-primary p-r-0">
+            <i class="fa fa-inbox font-18 align-middle mr-2"></i>
+            <b>Gelen Mesajlar</b>
+            <span class="badge badge-primary badge-sm float-right mt-1">@Model.ReceiveMessage</span>
+        </a>
+
+        <a href="/Message/SendBox/" class="list-group-item border-0 p-r-0">
+            <i class="fa fa-paper-plane font-18 align-middle mr-2"></i>
+            Giden Mesajlar
+            <span class="badge badge-primary badge-sm float-right mt-1">@Model.SendMessage</span>
+        </a>    
+
+        <a href="/Message/TrashBox/" class="list-group-item border-0 p-r-0">
+            <i class="fa fa-trash font-18 align-middle mr-2"></i>
+            Çöp Kutusu
+        </a>
+
+        <a href="/Login/UserLogin/" class="list-group-item border-0 p-r-0">
+            <i class="mdi mdi-file-document-box font-18 align-middle mr-2"></i>
+            Çıkış Yap
+        </a>
+
     </div>
 </div>

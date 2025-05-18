@@ -9,7 +9,7 @@ namespace EmailChatProject.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-Q9GCJU3\\SQLDBERKUT;initial Catalog=IdentityProjectEmail; integrated security=true; trust server certificate=true");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-LJIBOKJ;initial Catalog=EmailChatProject; integrated security=true; trust server certificate=true");
         }
 
         public DbSet<Message> messages { get; set; }
