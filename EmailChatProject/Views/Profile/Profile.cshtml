@@ -1,0 +1,224 @@
+﻿@model EmailChatProject.Models.ProfileViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <title>Profil</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #e7eaf3;
+            font-family: "Segoe UI", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            width: 600px;
+            min-height: 650px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: relative;
+            padding: 60px 42px 80px;
+            background: white;
+            text-align: center;
+        }
+
+        .toggle-form {
+            display: none;
+            width: 100%;
+            margin-top: 1rem;
+            text-align: left;
+        }
+
+        .profile-img {
+            margin: 0 auto 1rem;
+            display: block;
+            object-fit: cover;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+
+        ul.list-group {
+            display: inline-block;
+            text-align: center;
+            margin-bottom: 1rem;
+            padding-left: 0;
+        }
+
+            ul.list-group li.list-group-item {
+                border: none;
+                padding-left: 0;
+                padding-right: 0;
+                text-align: center;
+            }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            padding: 10px 0;
+            font-size: 1.1rem;
+            color: white;
+            background-color: #7175F9;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        #toggleBtn {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 18px;
+            border-radius: 10px;
+            color: white;
+            background-color: #7175F9;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            user-select: none;
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            justify-content: left;
+        }
+
+            .form-group label i {
+                color: #7175F9;
+                font-size: 1.2rem;
+            }
+
+        button.btn-success {
+            border-radius: 10px;
+            padding: 10px 25px;
+            font-size: 1.1rem;
+            width: 100%;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #7175F9;
+            font-size: 1.5rem;
+            text-decoration: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+        }
+
+            .logout-btn i {
+                font-size: 1.6rem;
+            }
+    </style>
+</head>
+<body>
+    <div class="card shadow">
+        <a href="/Login/UserLogin" class="logout-btn" title="Çıkış Yap">
+            <i class="lni lni-exit"></i>
+        </a>
+
+        <h4 class="mb-3">
+            <i class="lni lni-user" style="color:#7175F9;"></i>
+            @Model.Name @Model.Surname
+        </h4>
+
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success">
+                @ViewBag.Message
+            </div>
+        }
+
+        <img src="@Model.ProfileImageUrl" class="profile-img" alt="Profil Fotoğrafı" />
+
+        <p class="text-muted mb-3">Türkiye</p>
+
+        <ul class="list-group list-group-flush mb-3">
+            <li class="list-group-item">
+                <i class="lni lni-phone" style="color:#7175F9;"></i>
+                <strong>Telefon:</strong> @Model.PhoneNumber
+            </li>
+            <li class="list-group-item">
+                <i class="lni lni-envelope" style="color:#7175F9;"></i>
+                <strong>E-Posta:</strong> @Model.Email
+            </li>
+        </ul>
+
+        <a href="/Message/Inbox" class="btn">
+            <i class="lni lni-inbox"></i>
+            Mesajlarıma Git
+        </a>
+
+        <div id="toggleBtn">
+            <i class="lni lni-pencil"></i>
+            Güncelle
+        </div>
+
+        <form asp-action="Profile" method="post" class="toggle-form" id="profileForm" style="display:none;">
+            <div class="form-group">
+                <label asp-for="Name"><i class="lni lni-user"></i> Ad</label>
+                <input asp-for="Name" class="form-control" style="width: 100%;" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Surname"><i class="lni lni-user"></i> Soyad</label>
+                <input asp-for="Surname" class="form-control" style="width: 100%;" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email"><i class="lni lni-envelope"></i> E-Posta</label>
+                <input asp-for="Email" class="form-control" style="width: 100%;" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber"><i class="lni lni-phone"></i> Telefon</label>
+                <input asp-for="PhoneNumber" class="form-control" style="width: 100%;" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProfileImageUrl"><i class="lni lni-picture"></i> Profil Resmi URL</label>
+                <input asp-for="ProfileImageUrl" class="form-control" style="width: 100%;" />
+                <span asp-validation-for="ProfileImageUrl" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-success btn-block">Kaydet</button>
+        </form>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(function () {
+            $("#toggleBtn").click(function () {
+                $("#profileForm").slideToggle(300);
+            });
+        });
+    </script>
+</body>
+</html>

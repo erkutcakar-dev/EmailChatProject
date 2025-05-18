@@ -37,3 +37,20 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var successMessage = @Html.Raw(Json.Serialize(ViewBag.Success ?? ""));
+
+        if (successMessage.trim().length > 0) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Başarılı!',
+                text: successMessage,
+                confirmButtonText: 'Tamam'
+            });
+        }
+    });
+</script>
+
